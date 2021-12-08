@@ -3,7 +3,6 @@
   "private": true,
   "version": "99.99.99",
   "scripts": {
-    "package": "npm run clean  && npm run compile  && tfx extension create --rev-version",
     "publish": "tfx extension publish --no-wait-validation --token $TOKEN",
     "publish-local": "tfx extension publish --no-wait-validation",
     "clean": "rimraf ./*.vsix",
@@ -21,6 +20,10 @@
     "mocha": "^7.1.1",
     "sync-request": "^6.1.0",
     "tfx-cli": "^0.7.11",
+    "ts-node": "^10.4.0",
     "typescript": "3.8.3"
+  },
+  "dependencies": {
+    "vsts-task-lib": "^2.7.0"
   }
 }

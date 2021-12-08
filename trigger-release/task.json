@@ -1,16 +1,16 @@
 {
-  "id": "c704915c-1f6c-4237-9edd-4330da1ad3e6",
-  "name": "trigger-release",
-  "friendlyName": "Trigger a Release.",
-  "description": "Trigger a Release by replacing the characters in it name. Cross platform (work on Windows/Linux/Mac)",
-  "helpMarkDown": "[More Information](https://github.com/baoduy/ado-trigger-release)",
+  "id": "aa5bb619-b0e6-428c-b6af-57407f174aa6",
+  "name": "trigger-release-with-opcions",
+  "friendlyName": "Trigger a Release definition with options",
+  "description": "Trigger a Release definition with options",
+  "helpMarkDown": "[More Information](https://github.com/gregorypilar/ado-trigger-release)",
   "category": "Utility",
   "visibility": ["Build", "Release"],
-  "author": "Duy",
+  "author": "Gregory Pilar",
   "version": {
     "Major": 1,
     "Minor": 0,
-    "Patch": 8
+    "Patch": 0
   },
   "instanceNameFormat": "Trigger a Release",
   "inputs": [
@@ -41,6 +41,14 @@
       "defaultValue": "",
       "required": true,
       "helpMarkDown": "Target specific release stages (comma separated)."
+    },
+    {
+      "name": "triggerPreviousRelease",
+      "type": "boolean",
+      "label": "Trigger Previous Release",
+      "defaultValue": false,
+      "required": false,
+      "helpMarkDown": "To trigger previous release version of the release definition."
     }
   ],
   "dataSourceBindings": [

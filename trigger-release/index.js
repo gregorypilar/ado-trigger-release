@@ -23,6 +23,8 @@ function run() {
                 pat: task.getVariable('system.AccessToken')
             };
             const manager = new ReleaseManager_1.default(options);
+            let hasError = false;
+            //Try to deploy all environments.
             environments.forEach((env) => __awaiter(this, void 0, void 0, function* () {
                 try {
                     const rs = yield manager.reDeploy(Number(releaseDefinitionId), env);
@@ -30,10 +32,13 @@ function run() {
                 }
                 catch (ex) {
                     console.error(ex);
-                    task.setResult(task.TaskResult.Failed, ex);
+                    hasError = true;
                 }
             }));
-            task.setResult(task.TaskResult.Succeeded, '', true);
+            if (hasError)
+                task.setResult(task.TaskResult.Failed, 'The release tasks had failed with some errors.', true);
+            else
+                task.setResult(task.TaskResult.Succeeded, '', true);
         }
         catch (err) {
             console.error(err);

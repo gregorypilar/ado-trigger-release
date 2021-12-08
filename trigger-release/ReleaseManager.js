@@ -37,6 +37,12 @@ class default_1 {
             return this._releaseApi;
         });
     }
+    getReleaseHistory(releaseDefinitionId, envId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const api = yield this.getReleaseApi();
+            return yield api.getReleases(this.options.projectNameOrId, releaseDefinitionId, envId, null, null, ReleaseInterfaces_1.ReleaseStatus.Active, ReleaseInterfaces_1.EnvironmentStatus.Succeeded);
+        });
+    }
     getReleaseDefinition(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const api = yield this.getReleaseApi();
@@ -54,15 +60,18 @@ class default_1 {
         return __awaiter(this, void 0, void 0, function* () {
             env = env.toLowerCase();
             const api = yield this.getReleaseApi();
-            const item = typeof release === 'number' ? yield this.getRelease(release) : release;
+            const item = typeof release === "number" ? yield this.getRelease(release) : release;
             if (!item)
                 throw `The release ${release} is not found.`;
             //Find environment
-            const environment = item.environments.find(e => minimatch(e.name.toLowerCase(), env));
+            const environment = item.environments.find((e) => minimatch(e.name.toLowerCase(), env));
             if (!environment)
                 throw `The environment ${env.toUpperCase()} is not found.`;
             //Re-deploy the Release
-            return api.updateReleaseEnvironment({ comment: `Re-deploy the ${environment.name}`, status: ReleaseInterfaces_1.EnvironmentStatus.InProgress }, this.options.projectNameOrId, item.id, environment.id);
+            return api.updateReleaseEnvironment({
+                comment: `Re-deploy the ${environment.name}`,
+                status: ReleaseInterfaces_1.EnvironmentStatus.InProgress,
+            }, this.options.projectNameOrId, item.id, environment.id);
         });
     }
     reDeploy(releaseDefinitionId, env) {
@@ -71,6 +80,19 @@ class default_1 {
             if (!definition)
                 throw `Release defintion ${releaseDefinitionId} is not found.`;
             return this.deploy(definition.lastRelease.id, env);
+        });
+    }
+    reDeployPrevious(releaseDefinitionId, env) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const definition = yield this.getReleaseDefinition(releaseDefinitionId);
+            var stage = definition.environments.find((e) => e.name.toLowerCase() === env.toLowerCase());
+            if (!definition)
+                throw `Release defintion ${releaseDefinitionId} is not found.`;
+            if (!stage)
+                throw `Stage ${env} does not exit on Release defintion ${releaseDefinitionId} `;
+            var history = yield this.getReleaseHistory(definition.id, stage.id);
+            var oldReleases = history.filter((e) => e.id !== definition.lastRelease.id);
+            return this.deploy(definition.lastRelease.id, stage.name);
         });
     }
 }

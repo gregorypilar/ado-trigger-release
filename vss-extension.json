@@ -1,10 +1,10 @@
 {
   "manifestVersion": 1,
-  "id": "trigger-release",
-  "version": "1.0.5",
-  "name": "Trigger a Release.",
-  "description": "Trigger a Release by find and replace characters. Cross platform (work on Windows/Linux/Mac)",
-  "publisher": "Duy",
+  "id": "trigger-release-with-opcions",
+  "version": "1.0.0",
+  "name": "Trigger a Release definition with options",
+  "description": "Trigger a Release definition with options",
+  "publisher": "gregorypilar",
   "public": true,
   "icons": {
     "default": "static/images/icon.png"
@@ -26,7 +26,7 @@
   },
   "repository": {
     "type": "git",
-    "uri": "https://github.com/baoduy/ado-trigger-release"
+    "uri": "https://github.com/gregorypilar/ado-trigger-release"
   },
   "files": [
     {

@@ -13,6 +13,7 @@ async function run() {
   try {
     const releaseDefinitionId = task.getInput('TargetDefinition', true);
     const environments = task.getInput('releaseStagesInput', true).split(',');
+    const triggerPreviousRelease = task.getBoolInput('triggerPreviousRelease', false);
 
     const options: Options = {
       azureDevOpsUri: task.getVariable('system.TeamFoundationServerUri'),
@@ -26,8 +27,15 @@ async function run() {
     //Try to deploy all environments.
     environments.forEach(async env => {
       try {
-        const rs = await manager.reDeploy(Number(releaseDefinitionId), env);
-        console.log(`The ${rs.name} of ${rs.releaseDefinition.name} had been scheduled.`);
+        if(triggerPreviousRelease) {
+          const rs = await manager.reDeployPrevious(Number(releaseDefinitionId), env);
+          console.log(`The ${rs.name} of ${rs.releaseDefinition.name} had been scheduled.`);
+          }
+        else{
+          const rs = await manager.reDeploy(Number(releaseDefinitionId), env);
+          console.log(`The ${rs.name} of ${rs.releaseDefinition.name} had been scheduled.`);
+        }
+
       } catch (ex) {
         console.error(ex);
         hasError = true;

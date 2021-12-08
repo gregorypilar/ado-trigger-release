@@ -1,56 +1,41 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert = require("assert");
-const minimatch = require("minimatch");
 const ReleaseManager_1 = require("../ReleaseManager");
 const manager = new ReleaseManager_1.default({
-    azureDevOpsUri: 'https://dev.azure.com/drunkcoding/',
-    pat: '3plilhh2en44cdlskecwf33u77puiznqgqyejalqd5in6tx57tha',
-    projectNameOrId: 'drunkcoding.net'
+    azureDevOpsUri: 'https://dev.azure.com/gregorypilar/',
+    pat: 'dcnmqsjmfbv3bglzukn6axk7jy7jgioju6xm3v3mdppjsoce32ya',
+    projectNameOrId: 'eShopOnWeb-Test'
 });
-const releaseDefinition = 40;
+const releaseDefinition = 1;
 describe('Test trigger-release', function () {
-    // before(() => {});
-    // after(() => {});
-    // it('should succeed', function(done: MochaDone) {
-    //   this.timeout(30000);
-    //   const tp = path.join(__dirname, 'success.js');
-    //   console.log('Test process file:', tp);
-    //   const tr = new tsk.MockTestRunner(tp);
-    //   tr.run();
-    //   if (!tr.succeeded) console.error('Test error:', tr.errorIssues);
-    //   assert.equal(tr.succeeded, true, 'should have succeeded');
-    //   done();
-    // });
     it('Test getReleaseDefinition func', function (done) {
         this.timeout(10000);
         manager.getReleaseDefinition(releaseDefinition).then(rs => {
             assert.equal(rs.id, releaseDefinition);
-            //console.log(rs.lastRelease);
+            console.log(rs.lastRelease);
             done();
         });
     });
     it('Test reDeploy not found env func', function (done) {
         this.timeout(10000);
-        manager.deploy(675, 'duy').catch(err => {
-            assert.equal(err, 'The environment DUY is not found.');
+        manager.deploy(22, 'Stage 1').catch(err => {
+            assert.equal(err, 'The environment Stage 1 is not found.');
             done();
         });
     });
     it('Test reDeploy dv1 func', function (done) {
         this.timeout(10000);
-        manager.reDeploy(releaseDefinition, 'Nuget Internal Push').then(rs => {
+        manager.reDeploy(releaseDefinition, 'Stage 1').then(rs => {
             console.log(rs);
             done();
         });
     });
-    it('Test micromatch func', function (done) {
-        this.timeout(10000);
-        assert.equal(minimatch('sg-dv1', '*dv1'), true, '*dv1 should matched with sg-dv1');
-        assert.equal(minimatch('sg-dv1', 'sg-dv1'), true, 'sg-dv1 should matched with sg-dv1');
-        assert.equal(minimatch('sg-dv1', '*-dv1'), true, '*-dv1 should matched with sg-dv1');
-        assert.equal(minimatch('sg-dv1', '*dv*'), true, '*-dv1 should matched with sg-dv1');
-        assert.equal(minimatch('sg-dv1', 'dv1*'), false, 'dv1* should not matched with sg-dv1');
-        done();
+    it('Test reDeployPrevious dv1 func', function (done) {
+        this.timeout(1000000000000);
+        manager.reDeployPrevious(releaseDefinition, 'Stage 1').then(rs => {
+            console.log(rs);
+            done();
+        });
     });
 });
